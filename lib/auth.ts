@@ -45,8 +45,8 @@ export const authOptions: NextAuthOptions = {
           phone: user.phone,
           name: user.name,
           role: user.role,
-          unitId: user.unitId,
-          unitName: user.unit?.name,
+          unitId: user.unitId || '',
+          unitName: user.unit?.name || '',
         };
       },
     }),
@@ -55,18 +55,20 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.phone = user.phone;
         token.role = user.role;
-        token.unitId = user.unitId;
-        token.unitName = user.unitName;
+        token.unitId = user.unitId || '';
+        token.unitName = user.unitName || '';
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string;
+        session.user.phone = token.phone as string;
         session.user.role = token.role as string;
-        session.user.unitId = token.unitId as string;
-        session.user.unitName = token.unitName as string;
+        session.user.unitId = (token.unitId as string) || '';
+        session.user.unitName = (token.unitName as string) || '';
       }
       return session;
     },
