@@ -1,0 +1,128 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Đơn vị (Unit) - Tiểu đoàn, Đại đội 66, Cơ quan
+model Unit {
+  id        String   @id @default(cuid())
+  name      String   @unique  // "901", "902", "903", "Đại đội 66", "Cơ quan lữ đoàn bộ"
+  code      String   @unique  // "901", "902", "903", "D66", "CQLDB"
+  parentId  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  parent        Unit?  @relation("UnitHierarchy", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  subUnits      Unit[] @relation("UnitHierarchy")
+  admins        User[]
+  registrations VisitRegistration[]
+
+  @@index([parentId])
+}
+
+// Admin users và Super Admin
+model User {
+  id        String   @id @default(cuid())
+  phone     String   @unique
+  password  String
+  name      String
+  role      String   @default("ADMIN")  // "ADMIN" hoặc "SUPER_ADMIN"
+  unitId    String?  // null nếu là SUPER_ADMIN
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  unit                  Unit?               @relation(fields: [unitId], references: [id])
+  reviewedRegistrations VisitRegistration[] @relation("ReviewedBy")
+
+  @@index([unitId])
+  @@index([isActive])
+}
+
+// Đơn đăng ký thăm
+model VisitRegistration {
+  id                  String    @id @default(cuid())
+  
+  // Thông tin quân nhân
+  soldierName         String
+  
+  // Thông tin đơn vị (phân cấp)
+  unitId              String    // Đơn vị cuối cùng (D1, D2, D4, D5, D7, D8, Đại đội 66, Trung đội vệ binh, Đại đội thông tin)
+  mainUnitId          String?   // Đơn vị chính (901, 902, 903, Đại đội 66, Cơ quan lữ đoàn bộ)
+  
+  // Thông tin người thân
+  relativeName        String
+  relationship        String    // bố, mẹ, anh, chị, em, ông, bà, cô, dì, chú, bác, cậu, mợ, thím
+  
+  // Thông tin thăm
+  visitDate           DateTime  // Chỉ T7 hoặc CN
+  numberOfVisitors    Int       @default(1)  // 1-50
+  
+  // Địa chỉ
+  province            String    // Tỉnh/TP
+  ward                String    // Phường/Xã
+  
+  // Phương tiện
+  vehicleType         String    // "car" (ô tô), "motorbike" (xe máy)
+  vehicleCount        Int       @default(1)
+  
+  // Liên hệ
+  phoneNumber         String
+  
+  // Trạng thái
+  status              String    @default("PENDING") // PENDING, APPROVED, REJECTED
+  adminNotes          String?
+  
+  // Metadata
+  submittedAt         DateTime  @default(now())
+  reviewedAt          DateTime?
+  reviewedById        String?
+  
+  unit                Unit      @relation(fields: [unitId], references: [id])
+  reviewedBy          User?     @relation("ReviewedBy", fields: [reviewedById], references: [id])
+
+  @@index([unitId])
+  @@index([mainUnitId])
+  @@index([status])
+  @@index([visitDate])
+  @@index([submittedAt])
+}
+
+// NextAuth tables
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
