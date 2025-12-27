@@ -155,7 +155,7 @@ export default function AdminPage() {
                 Thông tin cá nhân
               </Link>
               <button
-                onClick={() => signOut({ callbackUrl: '/login' })}
+                onClick={() => signOut({redirect: true, callbackUrl: '/login' })}
                 className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg font-medium"
               >
                 Đăng xuất
