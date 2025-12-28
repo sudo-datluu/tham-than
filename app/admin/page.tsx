@@ -28,6 +28,7 @@ interface Registration {
   reviewedBy: {
     name: string;
   } | null;
+  registrationCode: string;
 }
 
 export default function AdminPage() {
@@ -253,6 +254,9 @@ export default function AdminPage() {
                 <thead className="bg-gray-50 border-b">
                   <tr>
                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                      Mã đăng kí
+                    </th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                       Ngày gửi
                     </th>
                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
@@ -278,6 +282,9 @@ export default function AdminPage() {
                 <tbody className="divide-y">
                   {registrations.map((reg) => (
                     <tr key={reg.id} className="hover:bg-gray-50">
+                      <td className="px-4 py-3 text-sm text-gray-900">
+                        {reg.registrationCode}
+                      </td>
                       <td className="px-4 py-3 text-sm text-gray-900">
                         {new Date(reg.submittedAt).toLocaleDateString('vi-VN')}
                       </td>
@@ -332,7 +339,7 @@ export default function AdminPage() {
             <div className="p-6">
               <div className="flex justify-between items-start mb-6">
                 <h2 className="text-2xl font-bold text-gray-800">
-                  Chi tiết đơn đăng ký
+                  Chi tiết đơn đăng ký {selectedRegistration.registrationCode}
                 </h2>
                 <button
                   onClick={() => {

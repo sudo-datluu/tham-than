@@ -48,6 +48,7 @@ model User {
 // Đơn đăng ký thăm
 model VisitRegistration {
   id                  String    @id @default(cuid())
+  registrationCode    String    @unique // Mã đăng ký 7 ký tự
   
   // Thông tin quân nhân
   soldierName         String

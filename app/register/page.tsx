@@ -11,11 +11,14 @@ import {
   getUpcomingWeekends,
 } from '@/lib/constants';
 
+import Link from 'next/link';
+
 export default function RegisterPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const [registrationCode, setRegistrationCode] = useState('');
 
   const [formData, setFormData] = useState({
     soldierName: '',
@@ -83,10 +86,8 @@ export default function RegisterPage() {
         throw new Error(data.error || 'Có lỗi xảy ra');
       }
 
+      setRegistrationCode(data.registration.registrationCode);
       setSuccess(true);
-      setTimeout(() => {
-        router.push('/');
-      }, 3000);
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -96,8 +97,17 @@ export default function RegisterPage() {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 flex items-center justify-center p-4">
-        <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full text-center">
+      <div 
+        className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 flex items-center justify-center p-4 relative"
+        style={{
+          backgroundImage: 'url(/images/background.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+        }}
+      >
+        <div className="absolute inset-0 bg-white/80 backdrop-blur-sm"></div>
+        <div className="relative z-10 bg-white rounded-2xl shadow-xl p-8 max-w-md w-full text-center">
           <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
             <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -107,17 +117,53 @@ export default function RegisterPage() {
           <p className="text-gray-600 mb-4">
             Đơn đăng ký của bạn đã được gửi. Vui lòng chờ đơn vị xét duyệt.
           </p>
-          <p className="text-sm text-gray-500">Đang chuyển về trang chủ...</p>
+          <div className="bg-indigo-50 border-2 border-indigo-600 rounded-lg p-4 mb-4">
+            <p className="text-sm text-gray-600 mb-2">Mã số đăng ký của bạn:</p>
+            <p className="text-3xl font-bold text-indigo-600 tracking-wider">{registrationCode}</p>
+            <p className="text-xs text-gray-500 mt-2">
+              Vui lòng lưu lại mã này để tra cứu trạng thái đơn đăng ký
+            </p>
+          </div>
+          <Link
+            href="/"
+            className="block w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg text-center transition-colors mt-4"
+          >
+            Quay về trang chủ
+          </Link>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4">
-      <div className="max-w-3xl mx-auto">
+    <div 
+      className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 relative"
+      style={{
+        backgroundImage: 'url(/images/background.jpg)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed',
+      }}
+    >
+      {/* Overlay để làm mờ background */}
+      <div className="absolute inset-0 bg-white/80 backdrop-blur-sm"></div>
+
+      {/* Content */}
+      <div className="relative z-10 max-w-3xl mx-auto">
+        {/* Logo */}
+        <div className="text-center mb-6">
+          <img
+            src="/images/logo.jpeg"
+            alt="Logo"
+            className="h-[120px] w-[120px] mx-auto mb-4"
+            onError={(e) => {
+              e.currentTarget.style.display = 'none';
+            }}
+          />
+        </div>
+
         <div className="bg-white rounded-2xl shadow-xl p-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-6">Đơn đăng ký thăm Quân nhân</h1>
+          <h1 className="text-3xl font-bold text-gray-800 mb-6">Form đăng ký thăm quân nhân</h1>
 
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
@@ -136,7 +182,7 @@ export default function RegisterPage() {
                 required
                 value={formData.soldierName}
                 onChange={(e) => setFormData({ ...formData, soldierName: e.target.value })}
-                className="text-gray-700 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
               />
             </div>
 
@@ -150,9 +196,9 @@ export default function RegisterPage() {
                   required
                   value={formData.mainUnit}
                   onChange={(e) => handleMainUnitChange(e.target.value)}
-                  className="text-gray-700 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                 >
-                    <option value="">Chọn đơn vị</option>
+                  <option value="">Chọn đơn vị</option>
                   {MAIN_UNITS.map((unit) => (
                     <option key={unit.value} value={unit.value}>
                       {unit.label}
@@ -170,7 +216,7 @@ export default function RegisterPage() {
                     required
                     value={formData.subUnit}
                     onChange={(e) => setFormData({ ...formData, subUnit: e.target.value })}
-                    className="text-gray-700 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                   >
                     <option value="">Chọn đại đội/trung đội</option>
                     {subUnits.map((unit) => (
@@ -194,7 +240,7 @@ export default function RegisterPage() {
                   required
                   value={formData.relativeName}
                   onChange={(e) => setFormData({ ...formData, relativeName: e.target.value })}
-                  className="text-gray-700 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                 />
               </div>
 
@@ -206,9 +252,9 @@ export default function RegisterPage() {
                   required
                   value={formData.relationship}
                   onChange={(e) => setFormData({ ...formData, relationship: e.target.value })}
-                  className="text-gray-700 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                 >
-                <option value="">Chọn quan hệ</option>
+                  <option value="">Chọn quan hệ</option>
                   {RELATIONSHIPS.map((rel) => (
                     <option key={rel} value={rel}>
                       {rel}
@@ -227,7 +273,7 @@ export default function RegisterPage() {
                 required
                 value={formData.visitDate}
                 onChange={(e) => setFormData({ ...formData, visitDate: e.target.value })}
-                className="text-gray-700 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
               >
                 <option value="">Chọn ngày thăm</option>
                 {upcomingWeekends.map((date) => (
@@ -248,9 +294,9 @@ export default function RegisterPage() {
                   required
                   value={formData.province}
                   onChange={(e) => setFormData({ ...formData, province: e.target.value })}
-                  className="text-gray-700 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                 >
-                    <option value="">Chọn tỉnh/thành phố</option>
+                  <option value="">Chọn tỉnh/thành phố</option>
                   {PROVINCES.map((province) => (
                     <option key={province} value={province}>
                       {province}
@@ -268,7 +314,7 @@ export default function RegisterPage() {
                   required
                   value={formData.ward}
                   onChange={(e) => setFormData({ ...formData, ward: e.target.value })}
-                  className="text-gray-700 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                 />
               </div>
             </div>
@@ -285,7 +331,7 @@ export default function RegisterPage() {
                 max="50"
                 value={formData.numberOfVisitors}
                 onChange={(e) => setFormData({ ...formData, numberOfVisitors: parseInt(e.target.value) || 1 })}
-                className="text-gray-700 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
               />
             </div>
 
@@ -299,7 +345,7 @@ export default function RegisterPage() {
                   required
                   value={formData.vehicleType}
                   onChange={(e) => setFormData({ ...formData, vehicleType: e.target.value })}
-                  className="text-gray-700 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                 >
                   <option value="">Chọn phương tiện</option>
                   {VEHICLE_TYPES.map((type) => (
@@ -320,7 +366,7 @@ export default function RegisterPage() {
                   min="1"
                   value={formData.vehicleCount}
                   onChange={(e) => setFormData({ ...formData, vehicleCount: parseInt(e.target.value) || 1 })}
-                  className="text-gray-700 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                 />
               </div>
             </div>
@@ -335,7 +381,7 @@ export default function RegisterPage() {
                 required
                 value={formData.phoneNumber}
                 onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
-                className="text-gray-700 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                 placeholder="0912345678"
               />
             </div>

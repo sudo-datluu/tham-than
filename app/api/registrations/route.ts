@@ -2,6 +2,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { generateRegistrationCode } from '@/lib/generateCode';
 
 export async function POST(request: NextRequest) {
   try {
@@ -53,9 +54,13 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Generate unique registration code
+    const registrationCode = await generateRegistrationCode();
+
     // Tạo đơn đăng ký
     const registration = await prisma.visitRegistration.create({
       data: {
+        registrationCode,
         soldierName,
         unitId: unit.id,
         mainUnitId: mainUnit.id,
@@ -76,6 +81,7 @@ export async function POST(request: NextRequest) {
       success: true,
       registration: {
         id: registration.id,
+        registrationCode: registration.registrationCode,
         status: registration.status,
       },
     });

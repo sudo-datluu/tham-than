@@ -109,7 +109,7 @@ export function getUpcomingWeekends(): Date[] {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  for (let i = 0; i <= 6; i++) {
+  for (let i = 1; i <= 7; i++) {
     const date = new Date(today);
     date.setDate(today.getDate() + i);
     const dayOfWeek = date.getDay();

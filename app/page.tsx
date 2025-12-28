@@ -13,7 +13,7 @@ export default function HomePage() {
     setQrCodeUrl(qrUrl);
   }, []);
 
-  const steps1 = [
+  const steps = [
     {
       number: 1,
       title: 'Quét mã QR',
@@ -22,7 +22,7 @@ export default function HomePage() {
     {
       number: 2,
       title: 'Điền thông tin',
-      description: 'Hoàn thành đơn đăng ký với đầy đủ thông tin',
+      description: 'Hoàn thành form đăng ký với đầy đủ thông tin',
     },
     {
       number: 3,
@@ -36,32 +36,33 @@ export default function HomePage() {
     },
   ];
 
-  const steps = [
-    {
-      number: 1,
-      title: 'Mở camera điện thoại',
-      description: 'Dùng ứng dụng camera có sẵn trên điện thoại của bạn iphone/android'
-    },
-    {
-      number: 2,
-      title: 'Quét mã QR',
-      description: 'Sử dụng camera điện thoại để quét mã QR bên dưới'
-    },
-    {
-      number: 3,
-      title: 'Điền thông tin theo mẫu',
-      description: 'Hoàn thành đơn đăng ký với đầy đủ thông tin'
-    },
-    {
-      number: 4,
-      title: 'Đợi phê duyệt',
-      description: 'Đơn vị sẽ xem xét và phê duyệt đơn đăng ký',
-    },
-  ];
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      <div className="container mx-auto px-4 py-12">
+    <div 
+      className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 relative"
+      style={{
+        backgroundImage: 'url(/images/background.jpg)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed',
+      }}
+    >
+      {/* Overlay để làm mờ background */}
+      <div className="absolute inset-0 bg-white/80 backdrop-blur-sm"></div>
+      
+      {/* Content */}
+      <div className="relative z-10 container mx-auto px-4 py-12">
+        {/* Logo */}
+        <div className="text-center mb-8">
+          <img
+            src="/images/logo.jpeg"
+            alt="Logo"
+            className="h-[120px] w-[120px] mx-auto mb-4"
+            onError={(e) => {
+              e.currentTarget.style.display = 'none';
+            }}
+          />
+        </div>
+
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
@@ -74,7 +75,7 @@ export default function HomePage() {
 
         {/* Steps */}
         <div className="max-w-5xl mx-auto mb-12">
-          <div className="flex flex-col md:flex-row justify-between-center items-start md:items-center gap-4">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             {steps.map((step, index) => (
               <div key={step.number} className="flex-1">
                 <div className="flex items-center gap-4">
@@ -134,6 +135,13 @@ export default function HomePage() {
               className="block w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-4 px-6 rounded-xl text-center transition-colors shadow-lg"
             >
               Đăng ký ngay
+            </Link>
+
+            <Link
+              href="/lookup"
+              className="block w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-4 px-6 rounded-xl text-center transition-colors shadow-lg mt-3"
+            >
+              Tra cứu đơn đăng ký
             </Link>
           </div>
         </div>

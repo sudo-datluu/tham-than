@@ -43,8 +43,32 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-100 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
+    <div 
+      className="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-100 flex items-center justify-center p-4 relative"
+      style={{
+        backgroundImage: 'url(/images/background.jpg)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed',
+      }}
+    >
+      {/* Overlay để làm mờ background */}
+      <div className="absolute inset-0 bg-white/80 backdrop-blur-sm"></div>
+
+      {/* Content */}
+      <div className="relative z-10 bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
+        {/* Logo */}
+        <div className="text-center mb-6">
+          <img
+            src="/images/logo.jpeg"
+            alt="Logo"
+            className="h-[120px] w-[120px] mx-auto mb-4"
+            onError={(e) => {
+              e.currentTarget.style.display = 'none';
+            }}
+          />
+        </div>
+
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-800 mb-2">Đăng nhập</h1>
           <p className="text-gray-600">Dành cho quản trị viên</p>
