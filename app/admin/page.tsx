@@ -37,6 +37,7 @@ export default function AdminPage() {
   const [registrations, setRegistrations] = useState<Registration[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'ALL' | 'PENDING' | 'APPROVED' | 'REJECTED'>('PENDING');
+  const [fetchingData, setFetchingData] = useState(false);
   const [dateRange, setDateRange] = useState({
     startDate: '',
     endDate: '',
@@ -58,6 +59,7 @@ export default function AdminPage() {
   }, [status, filter, dateRange]);
 
   const fetchRegistrations = async () => {
+    setFetchingData(true);
     try {
       const params = new URLSearchParams({ status: filter });
       
@@ -77,6 +79,7 @@ export default function AdminPage() {
     } catch (error) {
       console.error('Error fetching registrations:', error);
     } finally {
+      setFetchingData(false)
       setLoading(false);
     }
   };
@@ -244,7 +247,12 @@ export default function AdminPage() {
 
         {/* Registrations List */}
         <div className="bg-white rounded-lg shadow overflow-hidden">
-          {registrations.length === 0 ? (
+          {fetchingData ? (
+            <div className="flex flex-col items-center justify-center p-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-4 border-indigo-600"></div>
+              <p className="text-gray-600 mt-4">Đang tải dữ liệu...</p>
+            </div>
+          ) : registrations.length === 0 ? (
             <div className="p-8 text-center text-gray-500">
               Không có đơn đăng ký nào
             </div>
