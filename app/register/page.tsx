@@ -29,9 +29,9 @@ export default function RegisterPage() {
     visitDate: '',
     province: '',
     ward: '',
-    numberOfVisitors: 1,
+    numberOfVisitors: '1' as number | string,
     vehicleType: '',
-    vehicleCount: 1,
+    vehicleCount: '1' as number | string,
     phoneNumber: '',
   });
 
@@ -73,9 +73,9 @@ export default function RegisterPage() {
           visitDate: formData.visitDate,
           province: formData.province,
           ward: formData.ward,
-          numberOfVisitors: parseInt(formData.numberOfVisitors.toString()),
+          numberOfVisitors: parseInt(formData.numberOfVisitors.toString()) || 1,
           vehicleType: formData.vehicleType,
-          vehicleCount: parseInt(formData.vehicleCount.toString()),
+          vehicleCount: parseInt(formData.vehicleCount.toString()) || 1,
           phoneNumber: formData.phoneNumber,
         }),
       });
@@ -325,12 +325,18 @@ export default function RegisterPage() {
                 Số người thăm (1-50) <span className="text-red-500">*</span>
               </label>
               <input
-                type="number"
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 required
-                min="1"
-                max="50"
                 value={formData.numberOfVisitors}
-                onChange={(e) => setFormData({ ...formData, numberOfVisitors: parseInt(e.target.value) || 1 })}
+                onChange={(e) => {
+                  const val = e.target.value.replace(/\D/g, '');
+                  if (val === '' || (parseInt(val) >= 1 && parseInt(val) <= 50)) {
+                    setFormData({ ...formData, numberOfVisitors: val === '' ? '' : parseInt(val) });
+                  }
+                }}
+                placeholder="1"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
               />
             </div>
@@ -355,17 +361,24 @@ export default function RegisterPage() {
                   ))}
                 </select>
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Số lượng phương tiện <span className="text-red-500">*</span>
                 </label>
                 <input
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   required
                   min="1"
                   value={formData.vehicleCount}
-                  onChange={(e) => setFormData({ ...formData, vehicleCount: parseInt(e.target.value) || 1 })}
+                  onChange={(e) => {
+                    const val = e.target.value.replace(/\D/g, '');
+                    if (val === '' || parseInt(val) >= 1) {
+                      setFormData({ ...formData, vehicleCount: val === '' ? '' : parseInt(val) });
+                    }
+                  }}
+                  placeholder="1"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                 />
               </div>
