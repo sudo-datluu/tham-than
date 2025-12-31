@@ -49,20 +49,22 @@ export default function HomePage() {
       {/* Overlay để làm mờ background */}
       <div className="absolute inset-0 bg-white/80 backdrop-blur-sm"></div>
       
+      {/* Banner */}
+      <div className="relative z-10 w-full flex justify-center bg-white">
+        <img
+          src="/images/banner.jpeg"
+          alt="Logo"
+          className="max-w-full h-auto"
+          onError={(e) => {
+            e.currentTarget.style.display = 'none';
+          }}
+        />
+      </div>
+      
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 py-12">
         {/* Logo */}
-        <div className="text-center mb-8">
-          <img
-            src="/images/logo.jpeg"
-            alt="Logo"
-            className="h-[120px] w-[120px] mx-auto mb-4"
-            onError={(e) => {
-              e.currentTarget.style.display = 'none';
-            }}
-          />
-        </div>
-
+        
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
