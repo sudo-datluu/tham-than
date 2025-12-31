@@ -54,7 +54,7 @@ export default function LoginPage() {
     >
       {/* Overlay để làm mờ background */}
       <div className="absolute inset-0 bg-white/80 backdrop-blur-sm"></div>
-
+      
       {/* Content */}
       <div className="relative z-10 bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
         {/* Logo */}

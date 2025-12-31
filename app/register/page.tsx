@@ -136,287 +136,300 @@ export default function RegisterPage() {
   }
 
   return (
-    <div 
-      className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 relative"
-      style={{
-        backgroundImage: 'url(/images/background.jpg)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed',
-      }}
-    >
-      {/* Overlay để làm mờ background */}
-      <div className="absolute inset-0 bg-white/80 backdrop-blur-sm"></div>
+    <div>
+      {/* Banner */}
+      <div className="relative z-10 w-full flex justify-center bg-white">
+        <img
+          src="/images/banner.jpeg"
+          alt="Logo"
+          className="max-w-full h-auto"
+          onError={(e) => {
+            e.currentTarget.style.display = 'none';
+          }}
+        />
+      </div>
+      <div 
+        className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 relative"
+        style={{
+          backgroundImage: 'url(/images/background.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+        }}
+      >
+        {/* Overlay để làm mờ background */}
+        <div className="absolute inset-0 bg-white/80 backdrop-blur-sm"></div>
+        
+        {/* Content */}
+        <div className="relative z-10 max-w-3xl mx-auto">
+          {/* Logo */}
+          {/* <div className="text-center mb-6">
+            <img
+              src="/images/logo.jpeg"
+              alt="Logo"
+              className="h-[120px] w-[120px] mx-auto mb-4"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+              }}
+            />
+          </div> */}
 
-      {/* Content */}
-      <div className="relative z-10 max-w-3xl mx-auto">
-        {/* Logo */}
-        <div className="text-center mb-6">
-          <img
-            src="/images/logo.jpeg"
-            alt="Logo"
-            className="h-[120px] w-[120px] mx-auto mb-4"
-            onError={(e) => {
-              e.currentTarget.style.display = 'none';
-            }}
-          />
-        </div>
+          <div className="bg-white rounded-2xl shadow-xl p-8">
+            <h1 className="text-3xl font-bold text-gray-800 mb-6">Form đăng ký thăm quân nhân</h1>
 
-        <div className="bg-white rounded-2xl shadow-xl p-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-6">Form đăng ký thăm quân nhân</h1>
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
+                {error}
+              </div>
+            )}
 
-          {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
-              {error}
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Tên quân nhân */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Tên quân nhân <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                required
-                value={formData.soldierName}
-                onChange={(e) => setFormData({ ...formData, soldierName: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
-              />
-            </div>
-
-            {/* Đơn vị */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Tên quân nhân */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Đơn vị <span className="text-red-500">*</span>
+                  Tên quân nhân <span className="text-red-500">*</span>
                 </label>
-                <select
+                <input
+                  type="text"
                   required
-                  value={formData.mainUnit}
-                  onChange={(e) => handleMainUnitChange(e.target.value)}
+                  value={formData.soldierName}
+                  onChange={(e) => setFormData({ ...formData, soldierName: e.target.value })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
-                >
-                  <option value="">Chọn đơn vị</option>
-                  {MAIN_UNITS.map((unit) => (
-                    <option key={unit.value} value={unit.value}>
-                      {unit.label}
-                    </option>
-                  ))}
-                </select>
+                />
               </div>
 
-              {subUnits.length > 0 && (
+              {/* Đơn vị */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Đại đội/Trung đội <span className="text-red-500">*</span>
+                    Đơn vị <span className="text-red-500">*</span>
                   </label>
                   <select
                     required
-                    value={formData.subUnit}
-                    onChange={(e) => setFormData({ ...formData, subUnit: e.target.value })}
+                    value={formData.mainUnit}
+                    onChange={(e) => handleMainUnitChange(e.target.value)}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                   >
-                    <option value="">Chọn đại đội/trung đội</option>
-                    {subUnits.map((unit) => (
+                    <option value="">Chọn đơn vị</option>
+                    {MAIN_UNITS.map((unit) => (
                       <option key={unit.value} value={unit.value}>
                         {unit.label}
                       </option>
                     ))}
                   </select>
                 </div>
-              )}
-            </div>
 
-            {/* Thông tin người thân */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Tên người thân <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={formData.relativeName}
-                  onChange={(e) => setFormData({ ...formData, relativeName: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
-                />
+                {subUnits.length > 0 && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Đại đội/Trung đội <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      required
+                      value={formData.subUnit}
+                      onChange={(e) => setFormData({ ...formData, subUnit: e.target.value })}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
+                    >
+                      <option value="">Chọn đại đội/trung đội</option>
+                      {subUnits.map((unit) => (
+                        <option key={unit.value} value={unit.value}>
+                          {unit.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
               </div>
 
+              {/* Thông tin người thân */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Tên người thân <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.relativeName}
+                    onChange={(e) => setFormData({ ...formData, relativeName: e.target.value })}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Quan hệ <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    required
+                    value={formData.relationship}
+                    onChange={(e) => setFormData({ ...formData, relationship: e.target.value })}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
+                  >
+                    <option value="">Chọn quan hệ</option>
+                    {RELATIONSHIPS.map((rel) => (
+                      <option key={rel} value={rel}>
+                        {rel}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Ngày thăm */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Quan hệ <span className="text-red-500">*</span>
+                  Ngày thăm (Chỉ T7 hoặc CN) <span className="text-red-500">*</span>
                 </label>
                 <select
                   required
-                  value={formData.relationship}
-                  onChange={(e) => setFormData({ ...formData, relationship: e.target.value })}
+                  value={formData.visitDate}
+                  onChange={(e) => setFormData({ ...formData, visitDate: e.target.value })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                 >
-                  <option value="">Chọn quan hệ</option>
-                  {RELATIONSHIPS.map((rel) => (
-                    <option key={rel} value={rel}>
-                      {rel}
+                  <option value="">Chọn ngày thăm</option>
+                  {upcomingWeekends.map((date) => (
+                    <option key={date.toISOString()} value={date.toISOString()}>
+                      {date.toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                     </option>
                   ))}
                 </select>
               </div>
-            </div>
 
-            {/* Ngày thăm */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Ngày thăm (Chỉ T7 hoặc CN) <span className="text-red-500">*</span>
-              </label>
-              <select
-                required
-                value={formData.visitDate}
-                onChange={(e) => setFormData({ ...formData, visitDate: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
-              >
-                <option value="">Chọn ngày thăm</option>
-                {upcomingWeekends.map((date) => (
-                  <option key={date.toISOString()} value={date.toISOString()}>
-                    {date.toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-                  </option>
-                ))}
-              </select>
-            </div>
+              {/* Địa chỉ */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Tỉnh/Thành phố <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    required
+                    value={formData.province}
+                    onChange={(e) => setFormData({ ...formData, province: e.target.value })}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
+                  >
+                    <option value="">Chọn tỉnh/thành phố</option>
+                    {PROVINCES.map((province) => (
+                      <option key={province} value={province}>
+                        {province}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-            {/* Địa chỉ */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Tỉnh/Thành phố <span className="text-red-500">*</span>
-                </label>
-                <select
-                  required
-                  value={formData.province}
-                  onChange={(e) => setFormData({ ...formData, province: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
-                >
-                  <option value="">Chọn tỉnh/thành phố</option>
-                  {PROVINCES.map((province) => (
-                    <option key={province} value={province}>
-                      {province}
-                    </option>
-                  ))}
-                </select>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Phường/Xã <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.ward}
+                    onChange={(e) => setFormData({ ...formData, ward: e.target.value })}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
+                  />
+                </div>
               </div>
 
+              {/* Số người thăm */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Phường/Xã <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={formData.ward}
-                  onChange={(e) => setFormData({ ...formData, ward: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
-                />
-              </div>
-            </div>
-
-            {/* Số người thăm */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Số người thăm (1-50) <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                inputMode="numeric"
-                pattern="[0-9]*"
-                required
-                value={formData.numberOfVisitors}
-                onChange={(e) => {
-                  const val = e.target.value.replace(/\D/g, '');
-                  if (val === '' || (parseInt(val) >= 1 && parseInt(val) <= 50)) {
-                    setFormData({ ...formData, numberOfVisitors: val === '' ? '' : parseInt(val) });
-                  }
-                }}
-                placeholder="1"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
-              />
-            </div>
-
-            {/* Phương tiện */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Phương tiện <span className="text-red-500">*</span>
-                </label>
-                <select
-                  required
-                  value={formData.vehicleType}
-                  onChange={(e) => setFormData({ ...formData, vehicleType: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
-                >
-                  <option value="">Chọn phương tiện</option>
-                  {VEHICLE_TYPES.map((type) => (
-                    <option key={type.value} value={type.value}>
-                      {type.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Số lượng phương tiện <span className="text-red-500">*</span>
+                  Số người thăm (1-50) <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
                   inputMode="numeric"
                   pattern="[0-9]*"
                   required
-                  min="1"
-                  value={formData.vehicleCount}
+                  value={formData.numberOfVisitors}
                   onChange={(e) => {
                     const val = e.target.value.replace(/\D/g, '');
-                    if (val === '' || parseInt(val) >= 1) {
-                      setFormData({ ...formData, vehicleCount: val === '' ? '' : parseInt(val) });
+                    if (val === '' || (parseInt(val) >= 1 && parseInt(val) <= 50)) {
+                      setFormData({ ...formData, numberOfVisitors: val === '' ? '' : parseInt(val) });
                     }
                   }}
                   placeholder="1"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                 />
               </div>
-            </div>
 
-            {/* Số điện thoại */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Số điện thoại <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="tel"
-                required
-                value={formData.phoneNumber}
-                onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
-                placeholder="0912345678"
-              />
-            </div>
+              {/* Phương tiện */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Phương tiện <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    required
+                    value={formData.vehicleType}
+                    onChange={(e) => setFormData({ ...formData, vehicleType: e.target.value })}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
+                  >
+                    <option value="">Chọn phương tiện</option>
+                    {VEHICLE_TYPES.map((type) => (
+                      <option key={type.value} value={type.value}>
+                        {type.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Số lượng phương tiện <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    required
+                    min="1"
+                    value={formData.vehicleCount}
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/\D/g, '');
+                      if (val === '' || parseInt(val) >= 1) {
+                        setFormData({ ...formData, vehicleCount: val === '' ? '' : parseInt(val) });
+                      }
+                    }}
+                    placeholder="1"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
+                  />
+                </div>
+              </div>
 
-            {/* Submit button */}
-            <div className="flex gap-4">
-              <button
-                type="button"
-                onClick={() => router.push('/')}
-                className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-lg transition-colors"
-              >
-                Hủy
-              </button>
-              <button
-                type="submit"
-                disabled={loading}
-                className="flex-1 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
-              >
-                {loading ? 'Đang gửi...' : 'Gửi đăng ký'}
-              </button>
-            </div>
-          </form>
+              {/* Số điện thoại */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Số điện thoại <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="tel"
+                  required
+                  value={formData.phoneNumber}
+                  onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
+                  placeholder="0912345678"
+                />
+              </div>
+
+              {/* Submit button */}
+              <div className="flex gap-4">
+                <button
+                  type="button"
+                  onClick={() => router.push('/')}
+                  className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-lg transition-colors"
+                >
+                  Hủy
+                </button>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="flex-1 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+                >
+                  {loading ? 'Đang gửi...' : 'Gửi đăng ký'}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
