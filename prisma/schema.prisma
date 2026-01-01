@@ -127,3 +127,13 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+// Phản ánh/Góp ý
+model Feedback {
+  id          String   @id @default(cuid())
+  name        String
+  phone       String
+  content     String
+  createdAt   DateTime @default(now())
+  isRead      Boolean  @default(false)
+}

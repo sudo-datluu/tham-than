@@ -140,7 +140,7 @@ export default function RegisterPage() {
       {/* Banner */}
       <div className="relative z-10 w-full flex justify-center bg-white">
         <img
-          src="/images/banner.jpeg"
+          src="/images/banner.jpg"
           alt="Logo"
           className="max-w-full h-auto"
           onError={(e) => {

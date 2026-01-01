@@ -153,6 +153,12 @@ export default function AdminPage() {
                 Thống kê
               </Link>
               <Link
+                href="/admin/feedback"
+                className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg font-medium"
+              >
+                Phản ánh
+              </Link>
+              <Link
                 href="/admin/profile"
                 className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg font-medium"
               >

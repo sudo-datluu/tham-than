@@ -52,7 +52,7 @@ export default function HomePage() {
       {/* Banner */}
       <div className="relative z-10 w-full flex justify-center bg-white">
         <img
-          src="/images/banner.jpeg"
+          src="/images/banner.jpg"
           alt="Logo"
           className="max-w-full h-auto"
           onError={(e) => {
@@ -144,6 +144,13 @@ export default function HomePage() {
               className="block w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-4 px-6 rounded-xl text-center transition-colors shadow-lg mt-3"
             >
               Tra cứu đơn đăng ký
+            </Link>
+
+            <Link
+              href="/feedback"
+              className="block w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-4 px-6 rounded-xl text-center transition-colors shadow-lg mt-3"
+            >
+              Phản ánh / Góp ý
             </Link>
           </div>
         </div>
