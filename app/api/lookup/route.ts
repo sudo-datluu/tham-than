@@ -43,6 +43,7 @@ export async function GET(request: NextRequest) {
         status: registration.status,
         submittedAt: registration.submittedAt,
         unit: registration.unit,
+        adminNotes: registration.adminNotes
       },
     });
   } catch (error: any) {

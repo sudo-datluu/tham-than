@@ -11,6 +11,7 @@ interface RegistrationInfo {
   visitDate: string;
   status: string;
   submittedAt: string;
+  adminNotes: string
   unit: {
     name: string;
   };
@@ -218,6 +219,12 @@ export default function LookupPage() {
                       {new Date(registration.submittedAt).toLocaleString('vi-VN')}
                     </span>
                   </div>
+                  {registration.adminNotes && (
+                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                      <p className="text-sm text-gray-500 mb-1">Ghi chú từ admin</p>
+                      <p className="text-gray-900">{registration.adminNotes}</p>
+                    </div>
+                  )}
                 </div>
 
                 {registration.status === 'PENDING' && (
