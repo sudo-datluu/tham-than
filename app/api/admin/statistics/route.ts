@@ -39,8 +39,6 @@ export async function GET(request: NextRequest) {
     if (!isSuperAdmin && session.user.unitId) {
       where.mainUnitId = session.user.unitId;
     }
-    console.log('Where clause:', where);
-    console.log('Is Super Admin:', isSuperAdmin);
 
     // Get all registrations for the month
     const registrations = await prisma.visitRegistration.findMany({
@@ -51,8 +49,6 @@ export async function GET(request: NextRequest) {
         status: true,
       },
     });
-    console.log('Found registrations:', registrations.length);
-    console.log('Sample data:', registrations[0]);
 
     // Calculate statistics (all approved)
     const totalRegistrations = registrations.length;

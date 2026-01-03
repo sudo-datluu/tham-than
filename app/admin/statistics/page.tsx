@@ -25,6 +25,7 @@ export default function StatisticsPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [firstTimeLoading, setFirstTimeLoading] = useState(true)
   const [stats, setStats] = useState<MonthlyStats | null>(null);
   const [selectedMonth, setSelectedMonth] = useState(() => {
     const now = new Date();
@@ -57,6 +58,9 @@ export default function StatisticsPage() {
     } catch (error) {
       console.error('Error fetching statistics:', error);
     } finally {
+      if (firstTimeLoading) {
+        setFirstTimeLoading(false)
+      }
       setLoading(false);
     }
   };
@@ -123,6 +127,14 @@ export default function StatisticsPage() {
       setExportLoading(false);
     }
   };
+
+  if (status === 'loading' || firstTimeLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-gray-600">Đang tải...</div>
+      </div>
+    );
+  }
 
   if (!session || !stats) {
     return null;
